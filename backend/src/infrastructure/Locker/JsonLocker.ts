@@ -73,17 +73,16 @@ export class JsonLocker {
 
     const lockers = await Locker.find();
 
-    const lock = lockers.find((lock) => lock.id === locker); //TODO Fix this, unreadable
+    const lock = lockers.find((candidate) => candidate.id === locker); //TODO Fix this, unreadable
     if (!lock) return;
     if (idType === "badge" && code !== lock.unlockBadge) return;
+
 
     this.commandBus.fireEvent({
       label: "locker-open",
       type: "info",
       message: `🔓Ask unlocking lock ${lock.lockerNumber}`,
       payload: {
-        // port: lock.id,
-        // locks: lockers,
         locker,
         idType,
         code,

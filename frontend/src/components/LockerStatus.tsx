@@ -18,6 +18,7 @@ import rfidLogo from '/RFID.svg'
 
 type Locker = {
   id: number;
+  port:number;
   lockerNumber: string;
   status: "open" | "closed" | "claimed";
 };

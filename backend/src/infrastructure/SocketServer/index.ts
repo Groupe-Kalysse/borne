@@ -64,12 +64,6 @@ class SocketServer {
     });
   }
 
-  // onClaim = (command: Command) => {
-  //   this.io.emit("claim", command.payload);
-  // };
-  // onFree = (command: Command) => {
-  //   this.io.emit("free", command.payload);
-  // };
   onLock = async () => {
     const locks = await Locker.find();
     this.io.emit("close", { locks });

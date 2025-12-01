@@ -1,5 +1,6 @@
 import { SerialPort } from "serialport";
 import CommBus, { Command } from "../CommBus";
+import { Locker } from "../Database/entities/Locker";
 
 export class Cu16Serial {
   // CU-dependant
@@ -34,20 +35,22 @@ export class Cu16Serial {
 
     this.commandBus.listenEvent("locker-ask-close", this.unlock);
   }
-  unlock = (command: Command) => {
-    const locker = command.payload?.locker;
+  unlock = async (command: Command) => {
+    const locker = command.payload?.locker as number;
     const idType = command.payload?.idType;
     const code = command.payload?.code;
     const action = command.payload?.action;
+    const lockerToOpen=await Locker.findOneByOrFail({id:locker})
+
 
     //FIX ⚠️ .locker devrait être .port
-    const num = command.payload?.locker as number;
+    const num = lockerToOpen.port;
     const commandToSerial = this.buildCommand("open", num);
     this.send(commandToSerial);
     this.commandBus.fireEvent({
       label: "serial-open",
       type: "info",
-      message: `🪛 Opened lock#${num} via cu16Serial `,
+      message: `🪛 Opened lock.port#${num} via cu16Serial `,
       payload: {
         locker,
         idType,

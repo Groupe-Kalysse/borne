@@ -45,7 +45,7 @@ export default class DatabaseListener {
       this.commandBus.fireEvent({
         label: "db-ok-close",
         type: "info",
-        message: `🏬 Stored the update for locker #${locker}`,
+        message: `🏬 Stored the update for locker.id#${locker}`,
       });
     }
 
