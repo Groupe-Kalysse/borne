@@ -27,7 +27,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     devices:
-    #   - /dev/hidraw1:/dev/hidraw1 # lecteur HID (seulement pour PC de dev)
+      #   - /dev/hidraw1:/dev/hidraw1 # lecteur HID (seulement pour PC de dev)
       - /dev/bus/usb:/dev/bus/usb # lecteur PCSC Exer
       - /dev/ttyUSB0:/dev/ttyUSB0 # Plaque CUxx
     ports:
