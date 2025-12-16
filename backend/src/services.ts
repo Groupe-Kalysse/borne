@@ -16,13 +16,12 @@ const httpServer = createServer(app);
 let servicesPromise: ReturnType<typeof initAll> | null = null;
 
 async function initAll() {
+  await dataSource.initialize();
   app.use(express.json());
   app.use("/api", apiRoutes);
 
   const commBus = new CommBus();
   const socketServer = new SocketServer(httpServer, commBus);
-
-  await dataSource.initialize();
 
   return {
     commBus,
@@ -32,7 +31,7 @@ async function initAll() {
     badges: newBadgeCollection(commBus),
     socket: socketServer,
     http: httpServer,
-    dbListener: new DatabaseListener(commBus)
+    dbListener: new DatabaseListener(commBus),
   };
 }
 
