@@ -43,8 +43,8 @@ export class Cu48Serial {
       payload: {},
     });
   };
-  status = (_command: Command) => {
-    const commandToSerial = this.buildCommand("open");
+  status = (_command?: Command) => {
+    const commandToSerial = this.buildCommand("getStatus");
     this.send(commandToSerial);
   };
 

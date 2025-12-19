@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import getServices from "./services";
+import getServices from "./infrastructure/services";
 
 const PORT = 3001;
 

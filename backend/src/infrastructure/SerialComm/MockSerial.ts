@@ -18,7 +18,7 @@ export default class MockSerial {
       payload: {},
     });
   };
-  status = (_payload: unknown) => {
+  status = (_command?: Command) => {
     this.commandBus.fireEvent({
       label: "serial-status",
       type: "info",
