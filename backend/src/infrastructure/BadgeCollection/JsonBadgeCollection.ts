@@ -1,16 +1,26 @@
 import badges from "../../config/badges.json";
 import CommBus, { Command } from "../CommBus";
+import { Badge, Role } from "../Database/entities/Badge";
 
 export class JsonBadgeCollection {
   private commandBus: CommBus;
 
   constructor(commandBus: CommBus) {
     this.commandBus = commandBus;
-    //this.commandBus.listenEvent("nfc-hit", this.findBadgeFromNfc);
+    Promise.all(
+      badges.map((rawBadge) => {
+        const badge = Badge.create({
+          ...rawBadge,
+          role: rawBadge.role as Role,
+        });
+        badge.save();
+      })
+    );
+    this.commandBus.listenEvent("nfc-hit", this.findBadgeFromNfc);
   }
-  findBadgeFromNfc = (command: Command) => {
+  findBadgeFromNfc = async (command: Command) => {
     const nfcTrace = command.payload?.trace as string;
-    const badge = badges.find((candidate) => candidate.id === nfcTrace);
+    const badge = await Badge.findOneBy({ trace: nfcTrace }); // badges.find((candidate) => candidate.trace === nfcTrace);
     if (badge)
       this.commandBus.fireEvent({
         label: "badge-hit",
@@ -31,6 +41,6 @@ export class JsonBadgeCollection {
       });
   };
   getList = () => {
-    return badges;
+    return Badge.find();
   };
 }

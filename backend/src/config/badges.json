@@ -1,26 +1,26 @@
 [
   {
-    "id": "' $ ''#! \"(",
+    "trace": "' $ ''#! \"(",
     "name": "Loic",
     "role": "STAFF"
   },
   {
-    "id": "'\"'#'#$$(",
+    "trace": "'\"'#'#$$(",
     "name": "Romain",
     "role": "STAFF"
   },
   {
-    "id": "'\"'!#% \"(",
+    "trace": "'\"'!#% \"(",
     "name": "Delphine",
     "role": "CLIENT"
   },
   {
-    "id": "'$# #%!$(",
+    "trace": "'$# #%!$(",
     "name": "Spare Badge 1",
     "role": "CLIENT"
   },
   {
-    "id": "'&$'###! (",
+    "trace": "'&$'###! (",
     "name": "Spare Badge 2",
     "role": "STAFF"
   }

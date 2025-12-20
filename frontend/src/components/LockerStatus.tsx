@@ -13,8 +13,9 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { LuArrowDownLeft, LuSmartphoneNfc, LuTrash2 } from "react-icons/lu";
-import rfidLogo from '/RFID.svg'
+import { LuArrowDownLeft, LuTrash2 } from "react-icons/lu";
+import rfidLogo from "/RFID.svg";
+import { useNavigate } from "react-router-dom";
 
 type Locker = {
   id: number;
@@ -25,16 +26,17 @@ type Lockers = Locker[];
 function LockerStatus() {
   const [lockers, setLockers] = useState<Lockers>([]);
   const [pin, setPin] = useState<string>("");
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
   const [focusedLockerId, setFocusedLockerId] = useState<number | null>(null);
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
   const focusedLockerRef = useRef<Locker | null>(null);
   const { socket, isConnected } = useSocket();
+  const navigate = useNavigate();
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
-    setOpen(false)
-    setFocusedLockerId(null)
+    setOpen(false);
+    setFocusedLockerId(null);
   };
   const hNumber = (num: string) => {
     setPin(pin + num);
@@ -42,7 +44,10 @@ function LockerStatus() {
 
   const hBadge = async (data: { trace: string }) => {
     if (!socket) return;
-    if (!focusedLockerRef.current) return; //TODO si pas de casier focus, check badges admin ?
+    if (focusedLockerRef.current === null) {
+      return navigate("/admin", { state: { trace: data.trace } });
+    }
+
     if (focusedLockerRef.current.status === "open") {
       socket.emit("ask-close", {
         locker: focusedLockerRef.current.id,
@@ -50,6 +55,7 @@ function LockerStatus() {
         code: data.trace,
       });
     }
+
     if (focusedLockerRef.current.status === "closed") {
       socket.emit("ask-open", {
         locker: focusedLockerRef.current.id,
@@ -62,43 +68,43 @@ function LockerStatus() {
   useEffect(() => {
     if (!socket) return;
     if (!focusedLockerRef.current) return; //TODO si pas de casier focus, check badges admin ?
-    
+
     if (focusedLockerRef.current.status === "open") {
-      if(pin.length!==8) return;
-      if(pin.substring(0,4) !== pin.substring(4,8)) return setPin("")
+      if (pin.length !== 8) return;
+      if (pin.substring(0, 4) !== pin.substring(4, 8)) return setPin("");
       socket.emit("ask-close", {
         locker: focusedLockerRef.current.id,
         idType: "code",
-        code: pin.substring(0,4),
+        code: pin.substring(0, 4),
       });
     }
     if (focusedLockerRef.current.status === "closed") {
-      if(pin.length!==4) return;
+      if (pin.length !== 4) return;
       socket.emit("ask-open", {
         locker: focusedLockerRef.current.id,
         idType: "code",
-        code: pin.substring(0,4),
+        code: pin.substring(0, 4),
       });
     }
-    setOpen(false)
-    setFocusedLockerId(null)
+    setOpen(false);
+    setFocusedLockerId(null);
   }, [pin]);
 
   useEffect(() => {
     focusedLockerRef.current = focusedLocker;
   }, [focusedLocker]);
 
-  useEffect(()=>{
-    setPin("")
-  }, [open])
+  useEffect(() => {
+    setPin("");
+  }, [open]);
 
   useEffect(() => {
     if (!socket) return;
 
     socket.on("welcome", hFeedback);
-    socket.on("badge", hBadge);
-    socket.on("close", hFeedback);
     socket.on("open", hFeedback);
+    socket.on("close", hFeedback);
+    socket.on("badge", hBadge);
 
     return () => {
       socket.off("welcome", hFeedback);
@@ -125,7 +131,10 @@ function LockerStatus() {
     <Dialog
       open={open}
       onOpenChange={(open) => {
-        if (!open) {setFocusedLockerId(null);setOpen(false)}
+        if (!open) {
+          setFocusedLockerId(null);
+          setOpen(false);
+        }
       }}
     >
       <ul className="container">
@@ -136,7 +145,7 @@ function LockerStatus() {
               asChild
               onClick={async () => {
                 setFocusedLockerId(locker.id);
-                setOpen(true)
+                setOpen(true);
               }}
             >
               <li
@@ -160,7 +169,9 @@ function LockerStatus() {
         <h2>✅ Borne en attente d'instructions</h2>
         <ul>
           <li>Cliquer sur un casier bleu pour le réserver</li>
-          <li>Cliquer sur un casier rouge préalablement réservé pour le libérer</li>
+          <li>
+            Cliquer sur un casier rouge préalablement réservé pour le libérer
+          </li>
         </ul>
       </section>
 
@@ -170,18 +181,38 @@ function LockerStatus() {
             {focusedLocker?.status === "closed" ? "Ouvrir" : "Verrouiller"} le
             casier {focusedLocker?.lockerNumber}
           </DialogTitle>
-          <DialogDescription className="text-xl font-bold">Taper votre code à quatre chiffres OU passer votre badge pour {focusedLocker?.status === "open" ? "enregistrement":"vérification"}</DialogDescription>
+          <DialogDescription className="text-xl font-bold">
+            Taper votre code à quatre chiffres OU passer votre badge pour{" "}
+            {focusedLocker?.status === "open"
+              ? "enregistrement"
+              : "vérification"}
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-evenly">
           <div className="flex-1">
             <div className="flex justify-between relative">
-              <p className={`m-2 p-1 border-2 border-black ${pin.length>=4 && `border-green-600 && text-green-600`} w-40 h-12`}>{pin.substring(0,4).replace(/./g, "* ")}</p>
+              <p
+                className={`m-2 p-1 border-2 border-black ${
+                  pin.length >= 4 && `border-green-600 && text-green-600`
+                } w-40 h-12`}
+              >
+                {pin.substring(0, 4).replace(/./g, "* ")}
+              </p>
               &nbsp;
-              {focusedLocker?.status === "open" && pin.length>=4 && 
-              <div className="w-40 text-red-600">
-                <p className="absolute text-[16px] left-60 top-[-1rem] font-bold">Valider votre code</p>
-                <p className={`m-2 p-1 border-2 border-black ${pin.length>=4 && `border-red-600 &&`}w-40 h-12`}>{pin.substring(4,8).replace(/./g, "* ")}</p>
-              </div>}
+              {focusedLocker?.status === "open" && pin.length >= 4 && (
+                <div className="w-40 text-red-600">
+                  <p className="absolute text-[16px] left-60 top-[-1rem] font-bold">
+                    Valider votre code
+                  </p>
+                  <p
+                    className={`m-2 p-1 border-2 border-black ${
+                      pin.length >= 4 && `border-red-600 &&`
+                    }w-40 h-12`}
+                  >
+                    {pin.substring(4, 8).replace(/./g, "* ")}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="flex flex-wrap flex-1 gap-3 text-5xl justify-evenly">
               {"1234567890".split("").map((num) => (
@@ -196,23 +227,24 @@ function LockerStatus() {
                   {num}
                 </Button>
               ))}
-              <Button 
+              <Button
                 variant="destructive"
-                className="aspect-square" 
+                className="aspect-square"
                 onClick={(evt) => {
                   evt.preventDefault();
                   setPin("");
-                }}>
-                <LuTrash2 className="size-8"/>
+                }}
+              >
+                <LuTrash2 className="size-8" />
               </Button>
             </div>
           </div>
-          <Separator orientation="vertical"/>
-            <div className="flex flex-col flex-1 justify-center items-center text-9xl">
-              {/* <LuSmartphoneNfc /> */}
-              <img src={rfidLogo} className="w-1/2" />
-              <LuArrowDownLeft className="text-8xl text-gray-400"/>
-            </div>
+          <Separator orientation="vertical" />
+          <div className="flex flex-col flex-1 justify-center items-center text-9xl">
+            {/* <LuSmartphoneNfc /> */}
+            <img src={rfidLogo} className="w-1/2" />
+            <LuArrowDownLeft className="text-8xl text-gray-400" />
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

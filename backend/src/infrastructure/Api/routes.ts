@@ -7,8 +7,8 @@ router.get("/health", (_, res) => {
 });
 router.put("/badges", async (req, res) => {
   const { body } = req;
-  const badges = body.map((rawBadges: Badge) => {
-    const badge = Badge.create(rawBadges);
+  const badges = body.map((rawBadge: Badge) => {
+    const badge = Badge.create(rawBadge);
     badge.save();
   });
 
