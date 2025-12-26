@@ -45,7 +45,7 @@ function LockerStatus() {
   const hBadge = async (data: { trace: string }) => {
     if (!socket) return;
     if (focusedLockerRef.current === null) {
-      return navigate("/admin", { state: { trace: data.trace } });
+      return navigate("/admin", { state: { badge: data } });
     }
 
     if (focusedLockerRef.current.status === "open") {

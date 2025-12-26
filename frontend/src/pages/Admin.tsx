@@ -8,7 +8,7 @@ import {
 } from "../components/ui/dialog";
 import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 type Locker = {
   id: number;
@@ -22,7 +22,7 @@ export default function Admin() {
   const [focusedLockerId, setFocusedLockerId] = useState<number | null>(null);
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
   const { socket } = useSocket();
-  const { data } = useParams();
+  const state = useLocation();
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
@@ -96,6 +96,7 @@ export default function Admin() {
       <section>
         <button>❌ Libérer tous les casiers</button>
         <button>❌ Configurer une heure d'ouverture automatique</button>
+        <button>🔙 Retourner à l'interface Client</button>
         <Link to="/">Back to Home</Link>
       </section>
     </>
