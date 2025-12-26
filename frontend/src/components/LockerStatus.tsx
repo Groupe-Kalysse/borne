@@ -49,6 +49,8 @@ function LockerStatus() {
     name: string;
   }) => {
     if (!socket) return;
+    console.log({ data });
+
     if (data.role === "STAFF") {
       return navigate("/admin", { state: { badge: data } });
     }
