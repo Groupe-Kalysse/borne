@@ -22,7 +22,15 @@ export default function Admin() {
   const [focusedLockerId, setFocusedLockerId] = useState<number | null>(null);
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
   const { socket } = useSocket();
-  const state = useLocation();
+  const {
+    badge,
+  }: {
+    trace: string;
+    role: string;
+    id: number;
+    name: string;
+  } = useLocation();
+  console.log(badge);
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);

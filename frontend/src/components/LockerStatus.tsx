@@ -42,10 +42,18 @@ function LockerStatus() {
     setPin(pin + num);
   };
 
-  const hBadge = async (data: { trace: string }) => {
+  const hBadge = async (data: {
+    trace: string;
+    role: string;
+    id: number;
+    name: string;
+  }) => {
     if (!socket) return;
-    if (focusedLockerRef.current === null) {
+    if (data.role === "STAFF") {
       return navigate("/admin", { state: { badge: data } });
+    }
+    if (focusedLockerRef.current === null) {
+      return;
     }
 
     if (focusedLockerRef.current.status === "open") {
