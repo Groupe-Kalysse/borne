@@ -42,14 +42,9 @@ function LockerStatus() {
     setPin(pin + num);
   };
 
-  const hBadge = async (data: {
-    trace: string;
-    role: string;
-    id: number;
-    name: string;
-  }) => {
+  const hBadge = async ({ data }) => {
     if (!socket) return;
-    console.log({ data });
+    console.log(data);
 
     if (data.role === "STAFF") {
       return navigate("/admin", { state: { badge: data } });
