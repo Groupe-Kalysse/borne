@@ -23,6 +23,7 @@ export default function Admin() {
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
   const { socket } = useSocket();
   const location = useLocation();
+  const [badge, setBadge] = useState(null);
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
@@ -43,6 +44,10 @@ export default function Admin() {
       socket.off("close", hFeedback);
     };
   }, [socket]);
+
+  useEffect(() => {
+    setBadge(location.state.badge);
+  }, [location]);
 
   return (
     <>
@@ -101,11 +106,11 @@ export default function Admin() {
       </section>
       <footer>
         <p>Debug zone</p>
-        {location.state.badge?.id}
+        {badge?.id}
         <br />
-        {location.state.badge?.name}
+        {badge?.name}
         <br />
-        {location.state.badge?.trace}
+        {badge?.trace}
         <br />
       </footer>
     </>
