@@ -46,9 +46,9 @@ export default function Admin() {
   }, [socket]);
 
   useEffect(() => {
-    console.log("try to update badge", location);
+    console.log("try to update badge", location.state.state);
 
-    setBadge(location.state.badge);
+    setBadge(location.state.state);
   }, [location]);
 
   return (
