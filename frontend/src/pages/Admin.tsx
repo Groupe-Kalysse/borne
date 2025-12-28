@@ -8,7 +8,7 @@ import {
 } from "../components/ui/dialog";
 import { useSocket } from "../hooks/useSocket";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Locker = {
   id: number;
@@ -24,6 +24,7 @@ export default function Admin() {
   const { socket } = useSocket();
   const location = useLocation();
   const [badge, setBadge] = useState(null);
+  const navigate = useNavigate();
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
@@ -103,18 +104,15 @@ export default function Admin() {
       <section>
         <button>❌ Libérer tous les casiers</button>
         <button>❌ Configurer une heure d'ouverture automatique</button>
-        <button>🔙 Retourner à l'interface Client</button>
-        <Link to="/">Back to Home</Link>
+        <button
+          onClick={() => {
+            setBadge(null);
+            return navigate("/");
+          }}
+        >
+          🔙 Retourner à l'interface Client
+        </button>
       </section>
-      <footer>
-        <p>Debug zone</p>
-        {badge?.id}
-        <br />
-        {badge?.name}
-        <br />
-        {badge?.trace}
-        <br />
-      </footer>
     </>
   );
 }
