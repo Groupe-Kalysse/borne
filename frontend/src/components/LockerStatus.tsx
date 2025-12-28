@@ -44,10 +44,11 @@ function LockerStatus() {
 
   const hBadge = async ({ data }) => {
     if (!socket) return;
-    console.log(data);
 
     if (data.role === "STAFF") {
-      return navigate("/admin", { state: { badge: data } });
+      console.log("Staff badge detected: ", data);
+
+      return navigate("/admin", { state: data });
     }
     if (focusedLockerRef.current === null) {
       return;
