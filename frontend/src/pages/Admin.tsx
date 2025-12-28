@@ -23,7 +23,6 @@ export default function Admin() {
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
   const { socket } = useSocket();
   const location = useLocation();
-  const [badge] = useState(location.state.badge);
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
@@ -102,11 +101,11 @@ export default function Admin() {
       </section>
       <footer>
         <p>Debug zone</p>
-        {badge.id}
+        {location.state.badge?.id}
         <br />
-        {badge.name}
+        {location.state.badge?.name}
         <br />
-        {badge.trace}
+        {location.state.badge?.trace}
         <br />
       </footer>
     </>
