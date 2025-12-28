@@ -46,8 +46,6 @@ function LockerStatus() {
     if (!socket) return;
 
     if (data.role === "STAFF") {
-      console.log("Staff badge detected: ", data);
-
       return navigate("/admin", { state: data });
     }
     if (focusedLockerRef.current === null) {
