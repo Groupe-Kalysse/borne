@@ -50,16 +50,16 @@ class SocketServer {
         })
       );
 
-      socket.on("admin-ask-openAll", (data) =>
+      socket.on("admin-ask-openAll", (data) => {
         console.log("admin-ask-openAll");
-        
+
         this.commandBus.fireEvent({
           label: "socket-admin-ask-openAll",
           type: "info",
           message: `🔒🔒🔒: Admin asked to open all lockers`,
           payload: data,
-        })
-      );
+        });
+      });
 
       socket.on("disconnect", () =>
         this.commandBus.fireEvent({
