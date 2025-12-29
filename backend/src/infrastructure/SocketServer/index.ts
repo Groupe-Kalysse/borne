@@ -51,8 +51,6 @@ class SocketServer {
       );
 
       socket.on("admin-ask-openAll", (data) => {
-        console.log("admin-ask-openAll");
-
         this.commandBus.fireEvent({
           label: "socket-admin-ask-openAll",
           type: "info",

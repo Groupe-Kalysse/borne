@@ -29,6 +29,7 @@ export class Cu16Serial {
     this.portHandle.on("data", this.onDataChunk);
 
     this.commandBus.listenEvent("locker-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-open", this.unlock);
     this.commandBus.listenEvent("locker-close", this.unlock);
     this.commandBus.listenEvent("locker-status", this.status);
 

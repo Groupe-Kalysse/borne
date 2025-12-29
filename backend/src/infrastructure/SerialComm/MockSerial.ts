@@ -6,6 +6,7 @@ export default class MockSerial {
   constructor(commandBus: CommBus) {
     this.commandBus = commandBus;
     this.commandBus.listenEvent("locker-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-open", this.unlock);
     this.commandBus.listenEvent("locker-status", this.status);
   }
 
