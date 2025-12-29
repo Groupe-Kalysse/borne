@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { useSocket } from "../hooks/useSocket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 type Locker = {
@@ -16,14 +16,21 @@ type Locker = {
   status: "open" | "closed" | "claimed";
 };
 type Lockers = Locker[];
+type Badge = {
+  id: number;
+  name: string;
+  role: string;
+  trace: string;
+};
 export default function Admin() {
   const [lockers, setLockers] = useState<Lockers>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [focusedLockerId, setFocusedLockerId] = useState<number | null>(null);
   const focusedLocker = lockers.find((l) => l.id === focusedLockerId) ?? null;
+  const focusedLockerRef = useRef<Locker | null>(null);
   const { socket } = useSocket();
   const location = useLocation();
-  const [badge, setBadge] = useState(null);
+  const [badge, setBadge] = useState<Badge | null>(null);
   const navigate = useNavigate();
 
   const hFeedback = (data: { locks: Lockers }) => {
@@ -102,7 +109,21 @@ export default function Admin() {
         </Dialog>
       </section>
       <section>
-        <button>❌ Libérer tous les casiers</button>
+        <button
+          onClick={() => {
+            if (!socket) return;
+            if (!badge) return;
+            if (focusedLockerRef.current === null) return;
+
+            socket.emit("admin-ask-openAll", {
+              locker: focusedLockerRef.current.id,
+              idType: "admin",
+              code: badge.trace,
+            });
+          }}
+        >
+          ❌ Libérer tous les casiers
+        </button>
         <button>❌ Configurer une heure d'ouverture automatique</button>
         <button
           onClick={() => {
