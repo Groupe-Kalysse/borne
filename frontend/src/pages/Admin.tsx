@@ -111,6 +111,8 @@ export default function Admin() {
       <section>
         <button
           onClick={() => {
+            console.log("send order ?");
+
             if (!socket) return;
             if (!badge) return;
             if (focusedLockerRef.current === null) return;
@@ -120,6 +122,7 @@ export default function Admin() {
               idType: "admin",
               code: badge.trace,
             });
+            console.log("send order");
           }}
         >
           ❌ Libérer tous les casiers
