@@ -105,7 +105,6 @@ export class JsonLocker {
     const locker = command.payload?.locker as number;
     const idType = command.payload?.idType as string;
     const code = command.payload?.code as string;
-    console.log("socket-admin-ask-openAll", locker);
 
     const lockers = await Locker.find();
 
@@ -128,8 +127,6 @@ export class JsonLocker {
     });
   };
   adminOpenAllLocks = async (command: Command) => {
-    console.log("socket-admin-ask-openAll");
-
     const lockers = await Locker.find();
 
     for (let i = 1; i <= lockers.length; i++) {

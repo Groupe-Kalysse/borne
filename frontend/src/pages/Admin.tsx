@@ -119,9 +119,9 @@ export default function Admin() {
             });
           }}
         >
-          ❌ Libérer tous les casiers
+          ❔ Libérer tous les casiers
         </button>
-        <button>❌ Configurer une heure d'ouverture automatique</button>
+        {/* <button>❌ Configurer une heure d'ouverture automatique</button> // TODO*/}
         <button
           onClick={() => {
             setBadge(null);
