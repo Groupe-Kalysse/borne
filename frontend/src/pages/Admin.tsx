@@ -54,8 +54,6 @@ export default function Admin() {
   }, [socket]);
 
   useEffect(() => {
-    console.log("try to update badge", location.state);
-
     setBadge(location.state);
   }, [location]);
 
@@ -111,9 +109,6 @@ export default function Admin() {
       <section>
         <button
           onClick={() => {
-            console.log("send order ?");
-            console.log({ socket, badge });
-
             if (!socket) return;
             if (!badge) return;
 
@@ -122,7 +117,6 @@ export default function Admin() {
               idType: "admin",
               code: badge.trace,
             });
-            console.log("send order");
           }}
         >
           ❌ Libérer tous les casiers
