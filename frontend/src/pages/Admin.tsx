@@ -112,13 +112,13 @@ export default function Admin() {
         <button
           onClick={() => {
             console.log("send order ?");
+            console.log({ socket, badge });
 
             if (!socket) return;
             if (!badge) return;
-            if (focusedLockerRef.current === null) return;
 
             socket.emit("admin-ask-openAll", {
-              locker: focusedLockerRef.current.id,
+              locker: null,
               idType: "admin",
               code: badge.trace,
             });
