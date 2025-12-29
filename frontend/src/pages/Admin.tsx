@@ -99,8 +99,36 @@ export default function Admin() {
                 Que faire avec le casier {focusedLocker?.lockerNumber} ?
               </DialogTitle>
               <DialogDescription className="text-xl font-bold">
-                <button>❌ Visiter</button>
-                <button>❌ Libérer</button>
+                <button
+                  onClick={() => {
+                    if (!socket) return;
+                    if (!badge) return;
+                    if (!focusedLockerRef.current) return;
+
+                    socket.emit("admin-ask-visit", {
+                      locker: focusedLockerRef.current.id,
+                      idType: "admin",
+                      code: badge.trace,
+                    });
+                  }}
+                >
+                  Visiter
+                </button>
+                <button
+                  onClick={() => {
+                    if (!socket) return;
+                    if (!badge) return;
+                    if (!focusedLockerRef.current) return;
+
+                    socket.emit("admin-ask-open", {
+                      locker: focusedLockerRef.current.id,
+                      idType: "admin",
+                      code: badge.trace,
+                    });
+                  }}
+                >
+                  Libérer
+                </button>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -119,7 +147,7 @@ export default function Admin() {
             });
           }}
         >
-          ❔ Libérer tous les casiers
+          Libérer tous les casiers
         </button>
         {/* <button>❌ Configurer une heure d'ouverture automatique</button> // TODO*/}
         <button

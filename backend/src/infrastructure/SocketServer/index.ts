@@ -36,7 +36,7 @@ class SocketServer {
         this.commandBus.fireEvent({
           label: "socket-ask-close",
           type: "info",
-          message: `🔒:Frontend asked to close a locker`,
+          message: `🔒: Frontend asked to close a locker`,
           payload: data,
         })
       );
@@ -45,7 +45,25 @@ class SocketServer {
         this.commandBus.fireEvent({
           label: "socket-ask-open",
           type: "info",
-          message: `🔒:Frontend asked to open a locker`,
+          message: `🔒: Frontend asked to open a locker`,
+          payload: data,
+        })
+      );
+
+      socket.on("admin-ask-open", (data) =>
+        this.commandBus.fireEvent({
+          label: "socket-admin-ask-open",
+          type: "info",
+          message: `🔒: Admin asked to open a locker`,
+          payload: data,
+        })
+      );
+
+      socket.on("admin-ask-visit", (data) =>
+        this.commandBus.fireEvent({
+          label: "socket-admin-ask-visit",
+          type: "info",
+          message: `🕵️: Admin asked to visit a locker`,
           payload: data,
         })
       );

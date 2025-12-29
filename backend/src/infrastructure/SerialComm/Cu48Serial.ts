@@ -31,6 +31,7 @@ export class Cu48Serial {
 
     this.commandBus.listenEvent("locker-open", this.unlock);
     this.commandBus.listenEvent("locker-admin-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-visit", this.visit);
     this.commandBus.listenEvent("locker-status", this.status);
   }
   unlock = (command: Command) => {
@@ -43,6 +44,12 @@ export class Cu48Serial {
       message: `🪛 Opened lock#${num} via cu48Serial `,
       payload: {},
     });
+  };
+
+  visit = (command: Command) => {
+    const num = command.payload?.num as number;
+    const commandToSerial = this.buildCommand("open", num);
+    this.send(commandToSerial);
   };
   status = (_command?: Command) => {
     const commandToSerial = this.buildCommand("getStatus");

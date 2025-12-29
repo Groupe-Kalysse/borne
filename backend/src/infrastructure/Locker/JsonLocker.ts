@@ -30,7 +30,9 @@ export class JsonLocker {
     this.commandBus.listenEvent("web-asked-close", this.closeLock);
 
     this.commandBus.listenEvent("socket-ask-close", this.closeLock);
-    this.commandBus.listenEvent("socket-ask-open", this.openLock);
+    this.commandBus.listenEvent("socket-ask-open", this.adminOpenLock);
+    this.commandBus.listenEvent("admin-ask-open", this.openLock);
+    this.commandBus.listenEvent("socket-admin-ask-visit", this.adminVisitLock);
     this.commandBus.listenEvent(
       "socket-admin-ask-openAll",
       this.adminOpenAllLocks
@@ -99,6 +101,31 @@ export class JsonLocker {
         });
       }, i * 1000);
     }
+  };
+  adminVisitLock = async (command: Command) => {
+    const locker = command.payload?.locker as number;
+    const idType = command.payload?.idType as string;
+    const code = command.payload?.code as string;
+
+    const lockers = await Locker.find();
+
+    const lock = lockers.find((lock) => lock.id === locker); //TODO Fix this, unreadable
+    if (!lock) return;
+    const adminBadge = await Badge.findOneBy({ trace: code });
+    if (!adminBadge) return;
+    if (idType === "admin" || code !== adminBadge.trace) return;
+
+    this.commandBus.fireEvent({
+      label: "locker-admin-visit",
+      type: "info",
+      message: `🕵️: Admin visiting lock ${lock.lockerNumber}`,
+      payload: {
+        locker,
+        idType,
+        code,
+        action: "open",
+      },
+    });
   };
 
   adminOpenLock = async (command: Command) => {
