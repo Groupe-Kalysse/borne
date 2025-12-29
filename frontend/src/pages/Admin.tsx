@@ -109,6 +109,8 @@ export default function Admin() {
       <section>
         <button
           onClick={() => {
+            console.log("il se passe un truc au moins ?");
+
             if (!socket) return;
             if (!badge) return;
 
