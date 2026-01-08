@@ -14,6 +14,7 @@ import {
 import { Button } from "./ui/button";
 import { LuArrowDown, LuTrash2 } from "react-icons/lu";
 import rfidLogo from "/RFID.svg";
+import pinLogo from "/keypad.svg";
 import { useNavigate } from "react-router-dom";
 
 type Locker = {
@@ -187,13 +188,15 @@ function LockerStatus() {
             casier {focusedLocker?.lockerNumber}
           </DialogTitle>
           <DialogDescription className="text-xl font-bold">
-            {!prefferredMode && <><p className="flex items-center justify-center">Choisissez votre mode d'identification:</p>
+            {!prefferredMode && <><p className="flex items-center justify-center text-2xl">Choisissez votre mode d'identification:</p>
               <div className="flex items-center justify-center switch-mode gap-4 pt-16">
-                <Button className="text-gray-500 flex-1 h-100 bg-blue-600" onClick={()=>{setMode("code")}}>
-                  Identification par PIN 4 chiffres
+                <Button className="text-gray-500 flex-1 h-100 bg-blue-600 text-2xl flex-col" onClick={()=>{setMode("code")}}>
+                  <p>PIN 4 chiffres</p>
+                  <img src={pinLogo} className="w-1/3" />
                 </Button>
-                <Button className="text-gray-500 flex-1 h-100" onClick={()=>{setMode("badge")}}>
-                  Identification par badge
+                <Button className="text-gray-500 flex-1 h-100 bg-blue-600 text-2xl flex-col" onClick={()=>{setMode("badge")}}>
+                  Badge
+                  <img src={rfidLogo} className="w-1/3" />
                 </Button>
               </div></>}
             
