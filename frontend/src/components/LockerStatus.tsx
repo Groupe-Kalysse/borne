@@ -203,36 +203,34 @@ function LockerStatus() {
             
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex justify-evenly">
-          {prefferredMode==="code" && <div className="flex-1">
-            <div className="flex justify-between relative">
-              <p
-                className={`m-2 p-1 border-2 border-black ${
-                  pin.length >= 4 && `border-green-600 && text-green-600`
-                } w-40 h-12`}
+        <DialogFooter className="flex justify-center sm:justify-center ">
+          {prefferredMode==="code" && <div className="w-5/10">
+            <div className="">
+              {pin.length<4 && <>
+                <p className="flex text-xl items-center justify-center">Choisissez votre code (4 chiffres)</p>
+                <p
+                className="flex items-center justify-center m-2 p-1 border-2 border-black border-green-600 && text-green-600 h-12"
               >
                 {pin.substring(0, 4).replace(/./g, "* ")}
               </p>
+</>}              
+              {pin.length>=4 && <><p className="flex text-xl items-center justify-center font-bold text-red-600">Confirmez votre code</p>
+              <p
+                className="flex items-center justify-center m-2 p-1 border-2 border-black border-red-600 && text-red-600 h-12"
+              >
+                {pin.substring(4, 8).replace(/./g, "* ")}
+              </p></>}
               &nbsp;
               {focusedLocker?.status === "open" && pin.length >= 4 && (
                 <div className="w-40 text-red-600">
-                  <p className="absolute text-[16px] left-60 top-[-1rem] font-bold">
-                    Valider votre code
-                  </p>
-                  <p
-                    className={`m-2 p-1 border-2 border-black ${
-                      pin.length >= 4 && `border-red-600 &&`
-                    }w-40 h-12`}
-                  >
-                    {pin.substring(4, 8).replace(/./g, "* ")}
-                  </p>
+                  
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap flex-1 gap-3 text-5xl justify-evenly">
+            <div className="flex flex-wrap flex-1 gap-3 text-5xl justify-evenly bg-gray-300 p-4">
               {"1234567890".split("").map((num) => (
                 <Button
-                  className="aspect-square text-grey-600"
+                  className="aspect-square text-grey-600 "
                   key={num}
                   onClick={(evt) => {
                     evt.preventDefault();
