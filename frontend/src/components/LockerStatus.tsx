@@ -187,10 +187,7 @@ function LockerStatus() {
             casier {focusedLocker?.lockerNumber}
           </DialogTitle>
           <DialogDescription className="text-xl font-bold">
-            {!prefferredMode && <><p className="flex items-center justify-center">Pour{" "}
-            {focusedLocker?.status === "open"
-              ? "réserver"
-              : "libérer"} votre casier préférez vous:</p>
+            {!prefferredMode && <><p className="flex items-center justify-center">Choisissez votre mode d'identification:</p>
               <div className="flex items-center justify-center switch-mode gap-4 pt-16">
                 <Button className="text-gray-500 flex-1 h-100 bg-blue-600" onClick={()=>{setMode("code")}}>
                   Identification par PIN 4 chiffres
