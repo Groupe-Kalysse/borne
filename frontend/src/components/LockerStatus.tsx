@@ -32,6 +32,7 @@ function LockerStatus() {
   const focusedLockerRef = useRef<Locker | null>(null);
   const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
+  const [prefferredMode, setMode]=useState<string|null>(null)
 
   const hFeedback = (data: { locks: Lockers }) => {
     setLockers(data.locks);
@@ -138,6 +139,7 @@ function LockerStatus() {
         if (!open) {
           setFocusedLockerId(null);
           setOpen(false);
+          setMode(null)
         }
       }}
     >
@@ -186,14 +188,23 @@ function LockerStatus() {
             casier {focusedLocker?.lockerNumber}
           </DialogTitle>
           <DialogDescription className="text-xl font-bold">
-            Taper votre code à quatre chiffres OU passer votre badge pour{" "}
+            {!prefferredMode && <>Pour{" "}
             {focusedLocker?.status === "open"
-              ? "enregistrement"
-              : "vérification"}
+              ? "réserver"
+              : "libérer"} votre casier préférez vous: 
+              <div>
+                <Button className="text-gray-500" onClick={()=>{setMode("code")}}>
+                  Identification par PIN 4 chiffres
+                </Button>
+                <Button className="text-gray-500" onClick={()=>{setMode("badge")}}>
+                  Identification par badge
+                </Button>
+              </div></>}
+            
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-evenly">
-          <div className="flex-1">
+          {prefferredMode==="code" && <div className="flex-1">
             <div className="flex justify-between relative">
               <p
                 className={`m-2 p-1 border-2 border-black ${
@@ -242,13 +253,14 @@ function LockerStatus() {
                 <LuTrash2 className="size-8" />
               </Button>
             </div>
-          </div>
-          <Separator orientation="vertical" />
-          <div className="flex flex-col flex-1 justify-center items-center text-9xl">
-            {/* <LuSmartphoneNfc /> */}
+          </div>}
+          {prefferredMode==="badge" && <div className="flex flex-col flex-1 justify-center items-center text-9xl">
             <img src={rfidLogo} className="w-1/2" />
             <LuArrowDownLeft className="text-8xl text-gray-400" />
-          </div>
+          </div>}
+          {/* 
+          <Separator orientation="vertical" />
+           */}
         </DialogFooter>
       </DialogContent>
     </Dialog>
