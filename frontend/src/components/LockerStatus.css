@@ -30,3 +30,9 @@
   background-color: black;
   border: 1px solid black;
 }
+
+.switch-mode button{
+  background-color: #75aaeb;
+  font-weight: bold;
+  color: #fefefe;
+}

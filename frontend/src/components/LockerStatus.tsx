@@ -12,8 +12,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { LuArrowDownLeft, LuTrash2 } from "react-icons/lu";
+import { LuArrowDown, LuTrash2 } from "react-icons/lu";
 import rfidLogo from "/RFID.svg";
 import { useNavigate } from "react-router-dom";
 
@@ -183,20 +182,20 @@ function LockerStatus() {
 
       <DialogContent className="h-[90vh] min-w-[90vw] text-3xl">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="flex items-center justify-center">
             {focusedLocker?.status === "closed" ? "Ouvrir" : "Verrouiller"} le
             casier {focusedLocker?.lockerNumber}
           </DialogTitle>
           <DialogDescription className="text-xl font-bold">
-            {!prefferredMode && <>Pour{" "}
+            {!prefferredMode && <><p className="flex items-center justify-center">Pour{" "}
             {focusedLocker?.status === "open"
               ? "réserver"
-              : "libérer"} votre casier préférez vous: 
-              <div>
-                <Button className="text-gray-500" onClick={()=>{setMode("code")}}>
+              : "libérer"} votre casier préférez vous:</p>
+              <div className="flex items-center justify-center switch-mode gap-4 pt-16">
+                <Button className="text-gray-500 flex-1 h-100 bg-blue-600" onClick={()=>{setMode("code")}}>
                   Identification par PIN 4 chiffres
                 </Button>
-                <Button className="text-gray-500" onClick={()=>{setMode("badge")}}>
+                <Button className="text-gray-500 flex-1 h-100" onClick={()=>{setMode("badge")}}>
                   Identification par badge
                 </Button>
               </div></>}
@@ -248,17 +247,14 @@ function LockerStatus() {
                   setPin("");
                 }}
               >
-                <LuTrash2 className="size-8" />
+                <LuTrash2 className="size-8 text-red-400" />
               </Button>
             </div>
           </div>}
           {prefferredMode==="badge" && <div className="flex flex-col flex-1 justify-center items-center text-9xl">
             <img src={rfidLogo} className="w-1/2" />
-            <LuArrowDownLeft className="text-8xl text-gray-400" />
+            <LuArrowDown className="text-8xl text-gray-400" />
           </div>}
-          {/* 
-          <Separator orientation="vertical" />
-           */}
         </DialogFooter>
       </DialogContent>
     </Dialog>
