@@ -32,10 +32,10 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    # devices:
-    # - /dev/hidraw1:/dev/hidraw1 # lecteur HID (seulement pour PC de dev)
-    # - /dev/bus/usb:/dev/bus/usb # lecteur PCSC Exer
-    # - /dev/ttyUSB0:/dev/ttyUSB0 # Plaque CUxx
+    devices:
+        # - /dev/ttyUSB0:/dev/ttyUSB0 # Plaque CUxx
+        - /dev/hidraw1:/dev/hidraw1 # lecteur HID (seulement pour PC de dev)
+        - /dev/bus/usb:/dev/bus/usb # lecteur PCSC Exer
     depends_on:
       b-database:
         condition: service_healthy

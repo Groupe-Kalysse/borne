@@ -221,7 +221,7 @@ function LockerStatus() {
             <div className="flex flex-wrap flex-1 gap-3 text-5xl justify-evenly">
               {"1234567890".split("").map((num) => (
                 <Button
-                  className="aspect-square"
+                  className="aspect-square text-grey-600"
                   key={num}
                   onClick={(evt) => {
                     evt.preventDefault();
