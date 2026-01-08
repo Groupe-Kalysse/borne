@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "nodemon --exec ts-node -- ./src/index.ts",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "pairing": "nodemon --exec ts-node -- ./src/lockerPairing.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,14 +1,14 @@
-import newBadgeCollection from "./infrastructure/BadgeCollection";
-import CommBus from "./infrastructure/CommBus";
-import newLocker from "./infrastructure/Locker";
-import newNfcReader from "./infrastructure/NfcReader";
-import newSerialHandler from "./infrastructure/SerialComm";
-import SocketServer from "./infrastructure/SocketServer";
+import newBadgeCollection from "./BadgeCollection";
+import CommBus from "./CommBus";
+import newLocker from "./Locker";
+import newNfcReader from "./NfcReader";
+import newSerialHandler from "./SerialComm";
+import SocketServer from "./SocketServer";
 import express from "express";
 import { createServer } from "http";
-import apiRoutes from "./infrastructure/Api/routes";
-import { dataSource } from "./infrastructure/Database/dataSource";
-import DatabaseListener from "./infrastructure/Database/DatabaseListener";
+import apiRoutes from "./Api/routes";
+import { dataSource } from "./Database/dataSource";
+import DatabaseListener from "./Database/DatabaseListener";
 
 const app = express();
 const httpServer = createServer(app);

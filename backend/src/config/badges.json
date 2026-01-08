@@ -1,52 +1,27 @@
 [
   {
-    "id": "' $ ''#! \"(",
+    "trace": "' $ ''#! \"(",
     "name": "Loic",
-    "role": "staff"
+    "role": "STAFF"
   },
   {
-    "id": "'\"'#'#$$(",
+    "trace": "'\"'#'#$$(",
     "name": "Romain",
-    "role": "staff"
+    "role": "STAFF"
   },
   {
-    "id": "'\"'!#% \"(",
+    "trace": "'\"'!#% \"(",
     "name": "Delphine",
-    "role": "staff"
+    "role": "CLIENT"
   },
   {
-    "id": "'$# #%!$(",
+    "trace": "'$# #%!$(",
     "name": "Spare Badge 1",
-    "role": "staff"
+    "role": "CLIENT"
   },
   {
-    "id": "'&$'###! (",
+    "trace": "'&$'###! (",
     "name": "Spare Badge 2",
-    "role": "staff"
-  },
-  {
-    "id": "B3F4EF0E9000",
-    "name": "Adrien (pcsc)",
-    "role": "staff"
-  },
-  {
-    "id": "9353A9369000",
-    "name": "Beatrice (pcsc)",
-    "role": "staff"
-  },
-  {
-    "id": "338C7E2D9000",
-    "name": "Carl (pcsc)",
-    "role": "staff"
-  },
-  {
-    "id": "63A03B169000",
-    "name": "David (pcsc)",
-    "role": "staff"
-  },
-  {
-    "id": "C30EED0E9000",
-    "name": "Eliott (pcsc)",
-    "role": "staff"
+    "role": "STAFF"
   }
 ]

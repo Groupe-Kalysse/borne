@@ -1,18 +1,11 @@
 import lockers from "../../config/lockers.json";
 import CommBus, { Command } from "../CommBus";
 import { dataSource } from "../Database/dataSource";
+import { Badge } from "../Database/entities/Badge";
 import { Locker } from "../Database/entities/Locker";
 
-// type LockerType = {
-//   id: number;
-//   lockerNumber: string;
-//   status: string;
-//   unlockBadge?: string;
-//   unlockCode?: string;
-// };
 export class JsonLocker {
   private commandBus: CommBus;
-  // private state: LockerType[];
 
   constructor(commandBus: CommBus) {
     this.commandBus = commandBus;
@@ -37,7 +30,13 @@ export class JsonLocker {
     this.commandBus.listenEvent("web-asked-close", this.closeLock);
 
     this.commandBus.listenEvent("socket-ask-close", this.closeLock);
-    this.commandBus.listenEvent("socket-ask-open", this.openLock);
+    this.commandBus.listenEvent("socket-ask-open", this.adminOpenLock);
+    this.commandBus.listenEvent("admin-ask-open", this.openLock);
+    this.commandBus.listenEvent("socket-admin-ask-visit", this.adminVisitLock);
+    this.commandBus.listenEvent(
+      "socket-admin-ask-openAll",
+      this.adminOpenAllLocks
+    );
   }
 
   onBadge(): void | Promise<void> {}
@@ -82,8 +81,6 @@ export class JsonLocker {
       type: "info",
       message: `🔓Ask unlocking lock ${lock.lockerNumber}`,
       payload: {
-        // port: lock.id,
-        // locks: lockers,
         locker,
         idType,
         code,
@@ -100,7 +97,76 @@ export class JsonLocker {
           label: "irrelevant-internal-event",
           message: "This is a bandaid to spare time, plz fix",
           type: "warning",
-          payload: { id: i },
+          payload: { locker: i },
+        });
+      }, i * 1000);
+    }
+  };
+  adminVisitLock = async (command: Command) => {
+    const locker = command.payload?.locker as number;
+    const idType = command.payload?.idType as string;
+    const code = command.payload?.code as string;
+
+    const lockers = await Locker.find();
+
+    const lock = lockers.find((lock) => lock.id === locker); //TODO Fix this, unreadable
+    if (!lock) return;
+    const adminBadge = await Badge.findOneBy({ trace: code });
+    if (!adminBadge) return;
+    if (idType === "admin" || code !== adminBadge.trace) return;
+
+    this.commandBus.fireEvent({
+      label: "locker-admin-visit",
+      type: "info",
+      message: `🕵️: Admin visiting lock ${lock.lockerNumber}`,
+      payload: {
+        locker,
+        idType,
+        code,
+        action: "open",
+      },
+    });
+  };
+
+  adminOpenLock = async (command: Command) => {
+    const locker = command.payload?.locker as number;
+    const idType = command.payload?.idType as string;
+    const code = command.payload?.code as string;
+
+    const lockers = await Locker.find();
+
+    const lock = lockers.find((lock) => lock.id === locker); //TODO Fix this, unreadable
+    if (!lock) return;
+    const adminBadge = await Badge.findOneBy({ trace: code });
+    if (!adminBadge) return;
+    if (idType === "admin" || code !== adminBadge.trace) return;
+
+    this.commandBus.fireEvent({
+      label: "locker-admin-open",
+      type: "info",
+      message: `🔓Ask unlocking lock ${lock.lockerNumber}`,
+      payload: {
+        locker,
+        idType,
+        code,
+        action: "open",
+      },
+    });
+  };
+  adminOpenAllLocks = async (command: Command) => {
+    const lockers = await Locker.find();
+
+    for (let i = 1; i <= lockers.length; i++) {
+      setTimeout(() => {
+        this.adminOpenLock({
+          label: "irrelevant-internal-event",
+          message: "This is a bandaid to spare time, plz fix",
+          type: "warning",
+          payload: {
+            locker: i,
+            idType: "admin",
+            code: command.payload?.code,
+          },
         });
       }, i * 1000);
     }

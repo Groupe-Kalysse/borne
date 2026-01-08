@@ -30,6 +30,8 @@ export class Cu48Serial {
     this.portHandle.on("data", this.onDataChunk);
 
     this.commandBus.listenEvent("locker-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-visit", this.visit);
     this.commandBus.listenEvent("locker-status", this.status);
   }
   unlock = (command: Command) => {
@@ -43,8 +45,14 @@ export class Cu48Serial {
       payload: {},
     });
   };
-  status = (_command: Command) => {
-    const commandToSerial = this.buildCommand("open");
+
+  visit = (command: Command) => {
+    const num = command.payload?.num as number;
+    const commandToSerial = this.buildCommand("open", num);
+    this.send(commandToSerial);
+  };
+  status = (_command?: Command) => {
+    const commandToSerial = this.buildCommand("getStatus");
     this.send(commandToSerial);
   };
 

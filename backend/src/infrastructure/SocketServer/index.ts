@@ -9,12 +9,8 @@ class SocketServer {
   constructor(httpServer: any, commandBus: CommBus) {
     this.commandBus = commandBus;
     this.initialize(httpServer);
-    // this.commandBus.listenEvent("locker-claim", this.onClaim);
-    // this.commandBus.listenEvent("locker-free", this.onFree);
-    //this.commandBus.listenEvent("locker-close", this.onLock);
-    // this.commandBus.listenEvent("locker-open", this.onUnlock);
 
-    this.commandBus.listenEvent("nfc-hit", this.onBadge);
+    this.commandBus.listenEvent("badge-hit", this.onBadge);
     this.commandBus.listenEvent("db-ok-close", this.onLock);
     this.commandBus.listenEvent("db-ok-open", this.onUnlock);
   }
@@ -40,7 +36,7 @@ class SocketServer {
         this.commandBus.fireEvent({
           label: "socket-ask-close",
           type: "info",
-          message: `🔒:Frontend asked to close a locker`,
+          message: `🔒: Frontend asked to close a locker`,
           payload: data,
         })
       );
@@ -49,10 +45,37 @@ class SocketServer {
         this.commandBus.fireEvent({
           label: "socket-ask-open",
           type: "info",
-          message: `🔒:Frontend asked to open a locker`,
+          message: `🔒: Frontend asked to open a locker`,
           payload: data,
         })
       );
+
+      socket.on("admin-ask-open", (data) =>
+        this.commandBus.fireEvent({
+          label: "socket-admin-ask-open",
+          type: "info",
+          message: `🔒: Admin asked to open a locker`,
+          payload: data,
+        })
+      );
+
+      socket.on("admin-ask-visit", (data) =>
+        this.commandBus.fireEvent({
+          label: "socket-admin-ask-visit",
+          type: "info",
+          message: `🕵️: Admin asked to visit a locker`,
+          payload: data,
+        })
+      );
+
+      socket.on("admin-ask-openAll", (data) => {
+        this.commandBus.fireEvent({
+          label: "socket-admin-ask-openAll",
+          type: "info",
+          message: `🔒🔒🔒: Admin asked to open all lockers`,
+          payload: data,
+        });
+      });
 
       socket.on("disconnect", () =>
         this.commandBus.fireEvent({
@@ -64,12 +87,6 @@ class SocketServer {
     });
   }
 
-  // onClaim = (command: Command) => {
-  //   this.io.emit("claim", command.payload);
-  // };
-  // onFree = (command: Command) => {
-  //   this.io.emit("free", command.payload);
-  // };
   onLock = async () => {
     const locks = await Locker.find();
     this.io.emit("close", { locks });

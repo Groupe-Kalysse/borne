@@ -6,6 +6,7 @@ export default class MockSerial {
   constructor(commandBus: CommBus) {
     this.commandBus = commandBus;
     this.commandBus.listenEvent("locker-open", this.unlock);
+    this.commandBus.listenEvent("locker-admin-open", this.unlock);
     this.commandBus.listenEvent("locker-status", this.status);
   }
 
@@ -18,7 +19,7 @@ export default class MockSerial {
       payload: {},
     });
   };
-  status = (_payload: unknown) => {
+  status = (_command?: Command) => {
     this.commandBus.fireEvent({
       label: "serial-status",
       type: "info",
