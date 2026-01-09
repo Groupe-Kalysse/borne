@@ -1,50 +1,70 @@
 [
   {
-    "label": "OO1",
-    "port": 1
+    "label": "476",
+    "port": 12
   },
   {
-    "label": "OO2",
-    "port": 2
-  },
-  {
-    "label": "OO3",
-    "port": 3
-  },
-  {
-    "label": "OO4",
-    "port": 4
-  },
-  {
-    "label": "OO5",
-    "port": 5
-  },
-  {
-    "label": "OO6",
-    "port": 6
-  },
-  {
-    "label": "OO7",
+    "label": "477",
     "port": 7
   },
   {
-    "label": "OO8",
-    "port": 8
+    "label": "478",
+    "port": 5
   },
   {
-    "label": "OO9",
-    "port": 9
+    "label": "479",
+    "port": 6
   },
   {
-    "label": "O1O",
+    "label": "480",
+    "port": 2
+  },
+  {
+    "label": "481",
+    "port": 4
+  },
+  {
+    "label": "482",
+    "port": 1
+  },
+  {
+    "label": "483",
+    "port": 17
+  },
+  {
+    "label": "484",
+    "port": 16
+  },
+  {
+    "label": "485",
     "port": 10
   },
   {
-    "label": "O11",
+    "label": "486",
+    "port": 13
+  },
+  {
+    "label": "487",
+    "port": 8
+  },
+  {
+    "label": "488",
+    "port": 15
+  },
+  {
+    "label": "489",
+    "port": 9
+  },
+  {
+    "label": "490",
+    "port": 3
+  },
+  {
+    "label": "491",
     "port": 11
   },
   {
-    "label": "O12",
-    "port": 12
+    "label": "492",
+    "port": 14
   }
 ]

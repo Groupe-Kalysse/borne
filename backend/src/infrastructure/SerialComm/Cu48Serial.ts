@@ -35,7 +35,10 @@ export class Cu48Serial {
     this.commandBus.listenEvent("locker-status", this.status);
   }
   unlock = (command: Command) => {
-    const num = command.payload?.num as number;
+    // const num = command.payload?.num as number;
+    const num = command.payload?.locker as number;
+    console.log("Should open locker ID=",num);
+    
     const commandToSerial = this.buildCommand("open", num);
     this.send(commandToSerial);
     this.commandBus.fireEvent({

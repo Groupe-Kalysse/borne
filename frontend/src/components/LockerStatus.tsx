@@ -93,6 +93,7 @@ function LockerStatus() {
     }
     setOpen(false);
     setFocusedLockerId(null);
+    setMode(null)
   }, [pin]);
 
   useEffect(() => {
